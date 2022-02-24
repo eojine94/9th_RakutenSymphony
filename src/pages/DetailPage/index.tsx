@@ -4,7 +4,6 @@ import styled from "styled-components";
 import colors from "styles/colors";
 import Button from "components/Button";
 import axios from "axios";
-import { formattingExpireDate } from "shared/utils";
 
 const URL = "/homeworks/links";
 
@@ -30,8 +29,6 @@ const DetailPage: FC = () => {
   }, []);
 
   // console.log(data);
-
-  // console.log(formattingExpireDate(1645595028));
 
   return (
     <>

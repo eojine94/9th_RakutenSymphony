@@ -16,7 +16,9 @@ export const formattingExpireDate = (expireDay: number) => {
   const regex = /[^0-9]/g;
 
   //48시간 이상일때
-  const remainDay = datefns.formatDistance(today, expire);
+  const remainDay = datefns.formatDistanceStrict(today, expire, {
+    unit: "day",
+  });
   const formatDay = Number(remainDay.replace(regex, ""));
 
   //48시간 미만일때
@@ -29,5 +31,5 @@ export const formattingExpireDate = (expireDay: number) => {
     return minutesToHHMM(formatMinutes);
   }
 
-  return formatDay;
+  return `${formatDay}일`;
 };
