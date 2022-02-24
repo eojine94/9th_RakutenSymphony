@@ -4,21 +4,36 @@ import styled from "styled-components";
 import colors from "styles/colors";
 import Button from "components/Button";
 import axios from "axios";
+import { useParams } from "react-router";
+import fileSize from "filesize";
+import { url } from "inspector";
 
 const URL = "/homeworks/links";
 
 const DetailPage: FC = () => {
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<any>([]);
+
+  const params = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
 
       try {
+        // 전체 데이터
         const response = await axios.get(URL);
-        setData(response.data);
-        // console.log(data);
+        // setData(response.data);
+
+        // FIXME
+        // 임시로 첫번째 데이터 넣어봄
+        setData(response.data[0]);
+
+        //useParams 통해 필터링
+        // const response = await axios.get(URL);
+        // const data = response.data;
+        // const filteredData = data.find((el: any) => el.key === params);
+        // setData(filteredData);
       } catch (e) {
         console.log(e);
       }
@@ -29,47 +44,62 @@ const DetailPage: FC = () => {
   }, []);
 
   // console.log(data);
+  // console.log(new Date());
 
   return (
     <>
-      <Header>
-        <LinkInfo>
-          <Title>로고파일</Title>
-          <Url>localhost/7LF4MDLY</Url>
-        </LinkInfo>
-        <DownloadButton>
-          <img referrerPolicy="no-referrer" src="/svgs/download.svg" alt="" />
-          받기
-        </DownloadButton>
-      </Header>
-      <Article>
-        <Descrition>
-          <Texts>
-            <Top>링크 생성일</Top>
-            <Bottom>2022년 1월 12일 22:36 +09:00</Bottom>
-            <Top>메세지</Top>
-            <Bottom>로고파일 전달 드립니다.</Bottom>
-            <Top>다운로드 횟수</Top>
-            <Bottom>1</Bottom>
-          </Texts>
-          <LinkImage>
-            <Image />
-          </LinkImage>
-        </Descrition>
-        <ListSummary>
-          <div>총 1개의 파일</div>
-          <div>10.86KB</div>
-        </ListSummary>
-        <FileList>
-          <FileListItem>
-            <FileItemInfo>
-              <span />
-              <span>logo.png</span>
-            </FileItemInfo>
-            <FileItemSize>10.86KB</FileItemSize>
-          </FileListItem>
-        </FileList>
-      </Article>
+      {data && (
+        <>
+          <Header>
+            <LinkInfo>
+              <Title>로고파일</Title>
+              <Url>localhost/{data.key}</Url>
+              {/* FIXME */}
+              {/* <Url>localhost/{params}</Url> */}
+            </LinkInfo>
+            <DownloadButton>
+              <img
+                referrerPolicy="no-referrer"
+                src="/svgs/download.svg"
+                alt=""
+              />
+              받기
+            </DownloadButton>
+          </Header>
+          <Article>
+            <Descrition>
+              <Texts>
+                <Top>링크 생성일</Top>
+                <Bottom>2022년 1월 12일 22:36 +09:00</Bottom>
+                <Top>메세지</Top>
+                <Bottom>로고파일 전달 드립니다.</Bottom>
+                <Top>다운로드 횟수</Top>
+                <Bottom>{data.download_count}</Bottom>
+              </Texts>
+              <LinkImage>
+                <Image img={data.thumbnailUrl} />
+              </LinkImage>
+            </Descrition>
+            <ListSummary>
+              <div>총 {data.count}개의 파일</div>
+              <div>{fileSize(data.size)}</div>
+            </ListSummary>
+            <FileList>
+              {data.files.map((el: any) => {
+                return (
+                  <FileListItem>
+                    <FileItemInfo img={el.thumbnailUrl}>
+                      <span />
+                      <span>{el.name}</span>
+                    </FileItemInfo>
+                    <FileItemSize>{fileSize(el.size)}</FileItemSize>
+                  </FileListItem>
+                );
+              })}
+            </FileList>
+          </Article>
+        </>
+      )}
     </>
   );
 };
@@ -179,10 +209,10 @@ const LinkImage = styled.div`
   }
 `;
 
-const Image = styled.span`
+const Image = styled.span<any>`
   width: 120px;
   display: inline-block;
-  background-image: url(/svgs/default.svg);
+  background-image: ${({ img }) => `url(${img})`};
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
@@ -227,7 +257,7 @@ const FileListItem = styled.li`
   align-items: center;
 `;
 
-const FileItemInfo = styled.div`
+const FileItemInfo = styled.div<any>`
   flex-grow: 0;
   max-width: 50%;
   flex-basis: 50%;
@@ -239,7 +269,7 @@ const FileItemInfo = styled.div`
     height: 40px;
     margin-right: 12px;
     display: inline-block;
-    background-image: url(/svgs/default.svg);
+    background-image: ${({ img }) => `url(${img})`};
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
