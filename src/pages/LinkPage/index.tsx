@@ -27,8 +27,6 @@ const LinkPage: FC = () => {
     fetchData();
   }, []);
 
-  console.log(data);
-
   return (
     <>
       <Title>마이 링크</Title>
