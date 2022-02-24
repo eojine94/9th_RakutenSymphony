@@ -1,10 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import type { FC } from "react";
 import Avatar from "components/Avatar";
 import styled from "styled-components";
 import colors from "styles/colors";
+import axios from "axios";
+
+const URL = "/homeworks/links";
 
 const LinkPage: FC = () => {
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+
+      try {
+        const response = await axios.get(URL);
+        setData(response.data);
+        // console.log(data);
+      } catch (e) {
+        console.log(e);
+      }
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  // console.log(data);
   return (
     <>
       <Title>마이 링크</Title>
