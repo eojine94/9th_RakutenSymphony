@@ -1,12 +1,21 @@
+import fileSize from "filesize";
 import React from "react";
+import { useNavigate } from "react-router";
 import { LinkData } from "shared/types";
+import { formattingExpireDate } from "shared/utils";
 import styled from "styled-components";
 import colors from "styles/colors";
 import Avatar from "./Avatar";
 
 const ListItem = ({ itemData }: { itemData: LinkData }) => {
+  const navigate = useNavigate();
+
+  const goToDetailPage = () => {
+    navigate(`/detailpage/${itemData.key}`);
+  };
+
   return (
-    <TableRow>
+    <TableRow onClick={() => goToDetailPage()}>
       <TableCell>
         <LinkInfo>
           <LinkImage>
@@ -14,22 +23,22 @@ const ListItem = ({ itemData }: { itemData: LinkData }) => {
           </LinkImage>
           <LinkTexts>
             <LinkTitle>로고파일</LinkTitle>
-            <LinkUrl>localhost/7LF4MDLY</LinkUrl>
+            <LinkUrl>localhost/{itemData.key}</LinkUrl>
           </LinkTexts>
         </LinkInfo>
         <span />
       </TableCell>
       <TableCell>
         <span>파일개수</span>
-        <span>1</span>
+        <span>{itemData.count}</span>
       </TableCell>
       <TableCell>
         <span>파일사이즈</span>
-        <span>10.86KB</span>
+        <span>{fileSize(itemData.size)}</span>
       </TableCell>
       <TableCell>
         <span>유효기간</span>
-        <span>48시간 00분</span>
+        <span>{formattingExpireDate(itemData.expires_at)}</span>
       </TableCell>
       <TableCell>
         <span>받은사람</span>
