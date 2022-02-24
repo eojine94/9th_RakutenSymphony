@@ -1,4 +1,4 @@
-interface files {
+export interface files {
   key: string;
   thumbnailUrl: string;
   name: string;
