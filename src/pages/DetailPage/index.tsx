@@ -6,7 +6,6 @@ import Button from "components/Button";
 import axios from "axios";
 import { useParams } from "react-router";
 import fileSize from "filesize";
-import { url } from "inspector";
 
 const URL = "/homeworks/links";
 
@@ -43,7 +42,7 @@ const DetailPage: FC = () => {
     fetchData();
   }, []);
 
-  // console.log(data);
+  console.log(data);
   // console.log(new Date());
 
   return (
@@ -84,19 +83,21 @@ const DetailPage: FC = () => {
               <div>총 {data.count}개의 파일</div>
               <div>{fileSize(data.size)}</div>
             </ListSummary>
-            <FileList>
-              {data.files.map((el: any) => {
-                return (
-                  <FileListItem>
-                    <FileItemInfo img={el.thumbnailUrl}>
-                      <span />
-                      <span>{el.name}</span>
-                    </FileItemInfo>
-                    <FileItemSize>{fileSize(el.size)}</FileItemSize>
-                  </FileListItem>
-                );
-              })}
-            </FileList>
+            {data.files && (
+              <FileList>
+                {data.files.map((el: any) => {
+                  return (
+                    <FileListItem>
+                      <FileItemInfo img={el.thumbnailUrl}>
+                        <span />
+                        <span>{el.name}</span>
+                      </FileItemInfo>
+                      <FileItemSize>{fileSize(el.size)}</FileItemSize>
+                    </FileListItem>
+                  );
+                })}
+              </FileList>
+            )}
           </Article>
         </>
       )}
