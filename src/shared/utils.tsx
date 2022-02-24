@@ -33,3 +33,17 @@ export const formattingExpireDate = (expireDay: number) => {
 
   return `${formatDay}일`;
 };
+
+export const formattingCreateDate = (createDay: number) => {
+  const now = new Date(createDay * 1000);
+
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1;
+  const day = now.getDay();
+
+  const hours = now.getHours();
+  const formattingHours = ("0" + hours).slice(-2);
+  const minutes = now.getMinutes();
+
+  return `${year}년 ${month}월 ${day}일 ${formattingHours}:${minutes} +09:00`;
+};
