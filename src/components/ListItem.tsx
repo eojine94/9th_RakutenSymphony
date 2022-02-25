@@ -1,4 +1,4 @@
-import fileSize from "filesize";
+import filesize from "filesize";
 import React from "react";
 import { useNavigate } from "react-router";
 import { LinkData } from "shared/types";
@@ -13,6 +13,8 @@ const ListItem = ({ itemData }: { itemData: LinkData }) => {
   const goToDetailPage = () => {
     navigate(`/detailpage/${itemData.key}`);
   };
+
+  const formatingFileSize = filesize.partial({ base: 2, standard: "jedec" });
 
   return (
     <TableRow onClick={() => goToDetailPage()}>
@@ -34,7 +36,7 @@ const ListItem = ({ itemData }: { itemData: LinkData }) => {
       </TableCell>
       <TableCell>
         <span>파일사이즈</span>
-        <span>{fileSize(itemData.size)}</span>
+        <span>{formatingFileSize(itemData.size)}</span>
       </TableCell>
       <TableCell>
         <span>유효기간</span>

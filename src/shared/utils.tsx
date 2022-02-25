@@ -15,23 +15,26 @@ export const formattingExpireDate = (expireDay: number) => {
   const expire = new Date(expireDay * 1000);
   const regex = /[^0-9]/g;
 
-  //48시간 이상일때
-  const remainDay = datefns.formatDistanceStrict(today, expire, {
-    unit: "day",
-  });
-  const formatDay = Number(remainDay.replace(regex, ""));
-
-  //48시간 미만일때
-  if (formatDay < 2) {
-    const remainMinutes = datefns.formatDistanceStrict(today, expire, {
-      unit: "minute",
+  if (today.getTime() < expire.getTime()) {
+    //48시간 이상일때
+    const remainDay = datefns.formatDistanceStrict(today, expire, {
+      unit: "day",
     });
-    const formatMinutes = Number(remainMinutes.replace(regex, ""));
+    const formatDay = Number(remainDay.replace(regex, ""));
 
-    return minutesToHHMM(formatMinutes);
+    //48시간 미만일때
+    if (formatDay < 2) {
+      const remainMinutes = datefns.formatDistanceStrict(today, expire, {
+        unit: "minute",
+      });
+      const formatMinutes = Number(remainMinutes.replace(regex, ""));
+
+      return minutesToHHMM(formatMinutes);
+    }
+    return `${formatDay}일`;
+  } else {
+    return "만료되었습니다.";
   }
-
-  return `${formatDay}일`;
 };
 
 export const formattingCreateDate = (createDay: number) => {
