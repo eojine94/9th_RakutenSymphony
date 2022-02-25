@@ -21,3 +21,7 @@ export interface LinkData {
     emails: string[];
   };
 }
+
+export interface Iimg {
+  img: string;
+}

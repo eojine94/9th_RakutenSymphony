@@ -2,10 +2,12 @@ import filesize from "filesize";
 import React from "react";
 import { useNavigate } from "react-router";
 import { LinkData } from "shared/types";
-import { formattingExpireDate } from "shared/utils";
+import useDateFormat from "shared/hooks/useDateFormat";
 import styled from "styled-components";
 import colors from "styles/colors";
 import Avatar from "./Avatar";
+
+const formatingFileSize = filesize.partial({ base: 2, standard: "jedec" });
 
 const ListItem = ({ itemData }: { itemData: LinkData }) => {
   const navigate = useNavigate();
@@ -13,8 +15,6 @@ const ListItem = ({ itemData }: { itemData: LinkData }) => {
   const goToDetailPage = () => {
     navigate(`/detailpage/${itemData.key}`);
   };
-
-  const formatingFileSize = filesize.partial({ base: 2, standard: "jedec" });
 
   return (
     <TableRow onClick={() => goToDetailPage()}>
@@ -40,7 +40,7 @@ const ListItem = ({ itemData }: { itemData: LinkData }) => {
       </TableCell>
       <TableCell>
         <span>유효기간</span>
-        <span>{formattingExpireDate(itemData.expires_at)}</span>
+        <span>{useDateFormat(itemData.expires_at, "EXPIRE")}</span>
       </TableCell>
       <TableCell>
         <span>받은사람</span>

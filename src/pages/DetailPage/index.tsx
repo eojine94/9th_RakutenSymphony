@@ -1,44 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import type { FC } from "react";
 import styled from "styled-components";
 import colors from "styles/colors";
 import Button from "components/Button";
-import axios from "axios";
-import { useParams } from "react-router";
-import fileSize from "filesize";
-import { formattingCreateDate } from "shared/utils";
-import { files, LinkData } from "shared/types";
+import useDateFormat from "shared/hooks/useDateFormat";
+import { files, Iimg } from "shared/types";
+import filesize from "filesize";
+import TODAY from "shared/constants";
+import useFetch from "shared/hooks/useFetch";
 
-const URL = "/homeworks/links";
-const today = new Date("2022-01-24T03:24:00");
-
-type imgType = {
-  img: string;
-};
+const formatingFileSize = filesize.partial({ base: 2, standard: "jedec" });
 
 const DetailPage: FC = () => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<LinkData>();
-
-  const params = useParams();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-
-      try {
-        const response = await axios.get(URL);
-        const data = response.data;
-        const filteredData = data.find((el: LinkData) => el.key === params.id);
-        setData(filteredData);
-      } catch (e) {
-        console.log(e);
-      }
-      setLoading(false);
-    };
-
-    fetchData();
-  }, []);
+  const data = useFetch("/homeworks/links", true);
 
   const handleDownloadBtn = (): void => {
     alert("다운로드 되었습니다");
@@ -66,7 +40,7 @@ const DetailPage: FC = () => {
             <Descrition>
               <Texts>
                 <Top>링크 생성일</Top>
-                <Bottom>{formattingCreateDate(data.created_at)}</Bottom>
+                <Bottom>{useDateFormat(data.created_at, "CREATE")}</Bottom>
                 <Top>메세지</Top>
                 <Bottom>로고파일 전달 드립니다.</Bottom>
                 <Top>다운로드 횟수</Top>
@@ -79,12 +53,12 @@ const DetailPage: FC = () => {
             <ListSummary>
               <div>총 {data.count}개의 파일</div>
               {/* FIXME */}
-              {/* <div>{fileSize(data.size)}</div> */}
-              {data.size && <div>{fileSize(data.size)}</div>}
+              <div>{formatingFileSize(data.size)}</div>
+              {/* {data.size && <div>{formatingFileSize(data.size)}</div>} */}
             </ListSummary>
             {data.files && (
               <FileList>
-                {!(today.getTime() - data.expires_at * 1000 > 0) ? (
+                {!(TODAY.getTime() > data.expires_at * 1000) ? (
                   data.files.map((el: files) => {
                     return (
                       <FileListItem key={el.key}>
@@ -92,7 +66,9 @@ const DetailPage: FC = () => {
                           <span />
                           <span>{el.name}</span>
                         </FileItemInfo>
-                        <FileItemSize>{fileSize(el.size)}</FileItemSize>
+                        <FileItemSize>
+                          {formatingFileSize(el.size)}
+                        </FileItemSize>
                       </FileListItem>
                     );
                   })
@@ -214,7 +190,7 @@ const LinkImage = styled.div`
   }
 `;
 
-const Image = styled.span<imgType>`
+const Image = styled.span<Iimg>`
   width: 120px;
   display: inline-block;
   background-image: ${({ img }) => `url(${img})`};
@@ -262,7 +238,7 @@ const FileListItem = styled.li`
   align-items: center;
 `;
 
-const FileItemInfo = styled.div<imgType>`
+const FileItemInfo = styled.div<Iimg>`
   flex-grow: 0;
   max-width: 50%;
   flex-basis: 50%;

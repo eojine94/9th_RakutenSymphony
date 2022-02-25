@@ -1,31 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import type { FC } from "react";
 import styled from "styled-components";
 import colors from "styles/colors";
-import axios from "axios";
 import ListItem from "components/ListItem";
 import { LinkData } from "shared/types";
-
-const URL = "/homeworks/links";
+import useFetch from "shared/hooks/useFetch";
 
 const LinkPage: FC = () => {
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(URL);
-        setData(response.data);
-      } catch (e) {
-        console.log(e);
-      }
-      setLoading(false);
-    };
-
-    fetchData();
-  }, []);
+  const data = useFetch("/homeworks/links");
 
   return (
     <>
@@ -41,7 +23,7 @@ const LinkPage: FC = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {!loading &&
+          {data &&
             data.map((item: LinkData) => {
               return <ListItem key={item.key} itemData={item} />;
             })}
