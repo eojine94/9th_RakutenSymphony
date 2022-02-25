@@ -56,7 +56,6 @@
     "@types/react-copy-to-clipboard": "^5.0.2",
     "@types/styled-components": "^5.1.19",
     "customize-cra": "^1.0.0",
-    "react-app-rewire-svg-react-loader": "github:codebandits/react-app-rewire-svg-react-loader",
     "react-app-rewired": "^2.1.11",
     "react-copy-to-clipboard": "^5.0.4"
   },
