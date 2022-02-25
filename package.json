@@ -52,9 +52,11 @@
     "@babel/preset-env": "^7.16.8",
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
+    "@types/react-copy-to-clipboard": "^5.0.2",
     "@types/styled-components": "^5.1.19",
     "customize-cra": "^1.0.0",
-    "react-app-rewired": "^2.1.11"
+    "react-app-rewired": "^2.1.11",
+    "react-copy-to-clipboard": "^5.0.4"
   },
   "proxy": "https://storage-fe.fastraffic.io"
 }

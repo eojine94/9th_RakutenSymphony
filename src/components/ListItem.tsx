@@ -1,17 +1,24 @@
 import fileSize from "filesize";
-import React from "react";
+import React, { useRef } from "react";
 import { useNavigate } from "react-router";
 import { LinkData } from "shared/types";
 import { formattingExpireDate } from "shared/utils";
 import styled from "styled-components";
 import colors from "styles/colors";
 import Avatar from "./Avatar";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const ListItem = ({ itemData }: { itemData: LinkData }) => {
+  const url = `localhost/${itemData.key}`;
   const navigate = useNavigate();
 
   const goToDetailPage = () => {
     navigate(`/detailpage/${itemData.key}`);
+  };
+
+  const urlAlert = (e: any) => {
+    e.stopPropagation();
+    alert(`${url} 주소가 복사되었습니다.`);
   };
 
   return (
@@ -23,7 +30,9 @@ const ListItem = ({ itemData }: { itemData: LinkData }) => {
           </LinkImage>
           <LinkTexts>
             <LinkTitle>로고파일</LinkTitle>
-            <LinkUrl>localhost/{itemData.key}</LinkUrl>
+            <CopyToClipboard text={url}>
+              <LinkUrl onClick={urlAlert}>{url}</LinkUrl>
+            </CopyToClipboard>
           </LinkTexts>
         </LinkInfo>
         <span />
