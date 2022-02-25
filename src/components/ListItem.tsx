@@ -12,14 +12,16 @@ const ListItem = ({ itemData }: { itemData: LinkData }) => {
   const url = `localhost/${itemData.key}`;
   const navigate = useNavigate();
   const formatingFileSize = filesize.partial({ base: 2, standard: "jedec" });
+  const isExpired =
+    formattingExpireDate(itemData.expires_at) === "만료되었습니다.";
 
   const goToDetailPage = () => {
-    navigate(`/detailpage/${itemData.key}`);
+    navigate(`/${itemData.key}`);
   };
 
   const urlAlert = (e: any) => {
     e.stopPropagation();
-    alert(`${url} 주소가 복사되었습니다.`);
+    isExpired ? "" : alert(`${url} 주소가 복사되었습니다.`);
   };
 
   return (
@@ -32,7 +34,7 @@ const ListItem = ({ itemData }: { itemData: LinkData }) => {
           <LinkTexts>
             <LinkTitle>로고파일</LinkTitle>
             <CopyToClipboard text={url}>
-              <LinkUrl onClick={urlAlert}>{url}</LinkUrl>
+              <LinkUrl onClick={urlAlert}>{isExpired ? "만료됨" : url}</LinkUrl>
             </CopyToClipboard>
           </LinkTexts>
         </LinkInfo>
@@ -40,7 +42,7 @@ const ListItem = ({ itemData }: { itemData: LinkData }) => {
       </TableCell>
       <TableCell>
         <span>파일개수</span>
-        <span>{itemData.count}</span>
+        <span>{itemData.count.toLocaleString("ko-KR")}</span>
       </TableCell>
       <TableCell>
         <span>파일사이즈</span>
