@@ -6,7 +6,6 @@ import styled from "styled-components";
 import colors from "styles/colors";
 import filesize from "filesize";
 import { LinkData } from "shared/types";
-import { formattingExpireDate } from "shared/utils";
 import Avatar from "./Avatar";
 
 const formatingFileSize = filesize.partial({ base: 2, standard: "jedec" });
@@ -16,7 +15,7 @@ const ListItem = ({ itemData }: { itemData: LinkData }) => {
   const url = `localhost/${itemData.key}`;
   const isExistDownload = itemData.download_count > 0;
   const isExpired =
-    formattingExpireDate(itemData.expires_at) === "만료되었습니다.";
+    useDateFormat(itemData.expires_at, "EXPIRE") === "만료되었습니다.";
 
   const goToDetailPage = () => {
     navigate(`/${itemData.key}`);
