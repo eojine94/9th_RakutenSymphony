@@ -1,7 +1,5 @@
 # 라쿠텐심포니 코리아 Frontend Developer 기술 과제
 
-<br/>
-
 ## 3조 삼전십만가조
 
 - [김상훈](https://github.com/Ho0on)
@@ -9,9 +7,17 @@
 
 <br/>
 
+---
+
+<br/>
+
 ## 🚀 배포 주소
 
 [🔗 데모 링크](http://wantedpreonboardingenergybalance.s3-website.ap-northeast-2.amazonaws.com)
+
+<br/>
+
+---
 
 <br/>
 
@@ -64,6 +70,24 @@
 2. 받기 버튼을 누르면 `다운로드 되었습니다.`를 내용으로 가지는 브라우저 기본 Alert을 표시합니다.
 
 3. 링크의 유효기간이 만료 되지 않았을 경우에만 파일 목록을 표시합니다.
+
+<br/>
+
+---
+
+<br/>
+
+## 💥 트러블 슈팅
+
+1. 링크목록 API통신시 개발단계에는 프록시를 사용하여 통신 하였으나 배포단계에서 백엔드 서버의 'Access-Control-Allow-Origin' 설정이 안되어있어서 요청은 가나 데이터 응답이 오지 않음
+   - Mock Data를 작성하여 통신
+
+<br/>
+
+2. Thumbnail svg Url이미지를 못 불러오는 현상
+   - 웹팩 로더 문제인줄 알았으나 Url의 클라이언트 요청 거부(403 에러)로 인해 이미지를 못 불러옴. 기본제공된 default.svg 이미지를 활용
+
+<br/>
 
 ---
 
