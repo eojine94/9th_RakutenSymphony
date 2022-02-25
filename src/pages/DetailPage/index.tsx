@@ -4,12 +4,23 @@ import styled from "styled-components";
 import colors from "styles/colors";
 import Button from "components/Button";
 import axios from "axios";
+import { useParams } from "react-router";
+import fileSize from "filesize";
+import { formattingCreateDate } from "shared/utils";
+import { files, LinkData } from "shared/types";
 
 const URL = "/homeworks/links";
+const today = new Date("2022-01-24T03:24:00");
+
+type imgType = {
+  img: string;
+};
 
 const DetailPage: FC = () => {
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [data, setData] = useState<LinkData>();
+
+  const params = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,8 +28,9 @@ const DetailPage: FC = () => {
 
       try {
         const response = await axios.get(URL);
-        setData(response.data);
-        // console.log(data);
+        const data = response.data;
+        const filteredData = data.find((el: LinkData) => el.key === params.id);
+        setData(filteredData);
       } catch (e) {
         console.log(e);
       }
@@ -28,48 +40,70 @@ const DetailPage: FC = () => {
     fetchData();
   }, []);
 
-  // console.log(data);
+  const handleDownloadBtn = (): void => {
+    alert("다운로드 되었습니다");
+  };
 
   return (
     <>
-      <Header>
-        <LinkInfo>
-          <Title>로고파일</Title>
-          <Url>localhost/7LF4MDLY</Url>
-        </LinkInfo>
-        <DownloadButton>
-          <img referrerPolicy="no-referrer" src="/svgs/download.svg" alt="" />
-          받기
-        </DownloadButton>
-      </Header>
-      <Article>
-        <Descrition>
-          <Texts>
-            <Top>링크 생성일</Top>
-            <Bottom>2022년 1월 12일 22:36 +09:00</Bottom>
-            <Top>메세지</Top>
-            <Bottom>로고파일 전달 드립니다.</Bottom>
-            <Top>다운로드 횟수</Top>
-            <Bottom>1</Bottom>
-          </Texts>
-          <LinkImage>
-            <Image />
-          </LinkImage>
-        </Descrition>
-        <ListSummary>
-          <div>총 1개의 파일</div>
-          <div>10.86KB</div>
-        </ListSummary>
-        <FileList>
-          <FileListItem>
-            <FileItemInfo>
-              <span />
-              <span>logo.png</span>
-            </FileItemInfo>
-            <FileItemSize>10.86KB</FileItemSize>
-          </FileListItem>
-        </FileList>
-      </Article>
+      {data && (
+        <>
+          <Header>
+            <LinkInfo>
+              <Title>로고파일</Title>
+              <Url>localhost/{data.key}</Url>
+            </LinkInfo>
+            <DownloadButton onClick={handleDownloadBtn}>
+              <img
+                referrerPolicy="no-referrer"
+                src="/svgs/download.svg"
+                alt=""
+              />
+              받기
+            </DownloadButton>
+          </Header>
+          <Article>
+            <Descrition>
+              <Texts>
+                <Top>링크 생성일</Top>
+                <Bottom>{formattingCreateDate(data.created_at)}</Bottom>
+                <Top>메세지</Top>
+                <Bottom>로고파일 전달 드립니다.</Bottom>
+                <Top>다운로드 횟수</Top>
+                <Bottom>{data.download_count}</Bottom>
+              </Texts>
+              <LinkImage>
+                <Image img={data.thumbnailUrl} />
+              </LinkImage>
+            </Descrition>
+            <ListSummary>
+              <div>총 {data.count}개의 파일</div>
+              {/* FIXME */}
+              {/* <div>{fileSize(data.size)}</div> */}
+              {data.size && <div>{fileSize(data.size)}</div>}
+            </ListSummary>
+            {data.files && (
+              <FileList>
+                {!(today.getTime() - data.expires_at * 1000 > 0) ? (
+                  data.files.map((el: files) => {
+                    return (
+                      <FileListItem key={el.key}>
+                        <FileItemInfo img={el.thumbnailUrl}>
+                          <span />
+                          <span>{el.name}</span>
+                        </FileItemInfo>
+                        <FileItemSize>{fileSize(el.size)}</FileItemSize>
+                      </FileListItem>
+                    );
+                  })
+                ) : (
+                  <ExpiredText>유효기간이 만료되었습니다.</ExpiredText>
+                )}
+              </FileList>
+            )}
+          </Article>
+        </>
+      )}
     </>
   );
 };
@@ -111,6 +145,7 @@ const Url = styled.a`
 
 const DownloadButton = styled(Button)`
   font-size: 16px;
+  cursor: pointer;
 
   img {
     margin-right: 8px;
@@ -179,10 +214,10 @@ const LinkImage = styled.div`
   }
 `;
 
-const Image = styled.span`
+const Image = styled.span<imgType>`
   width: 120px;
   display: inline-block;
-  background-image: url(/svgs/default.svg);
+  background-image: ${({ img }) => `url(${img})`};
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
@@ -227,7 +262,7 @@ const FileListItem = styled.li`
   align-items: center;
 `;
 
-const FileItemInfo = styled.div`
+const FileItemInfo = styled.div<imgType>`
   flex-grow: 0;
   max-width: 50%;
   flex-basis: 50%;
@@ -239,7 +274,7 @@ const FileItemInfo = styled.div`
     height: 40px;
     margin-right: 12px;
     display: inline-block;
-    background-image: url(/svgs/default.svg);
+    background-image: ${({ img }) => `url(${img})`};
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
@@ -247,5 +282,12 @@ const FileItemInfo = styled.div`
 `;
 
 const FileItemSize = styled.div``;
+
+const ExpiredText = styled.div`
+  height: 72px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 export default DetailPage;

@@ -1,16 +1,17 @@
-import fileSize from "filesize";
-import React, { useRef } from "react";
+import React from "react";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useNavigate } from "react-router";
-import { LinkData } from "shared/types";
-import { formattingExpireDate } from "shared/utils";
 import styled from "styled-components";
 import colors from "styles/colors";
+import filesize from "filesize";
+import { LinkData } from "shared/types";
+import { formattingExpireDate } from "shared/utils";
 import Avatar from "./Avatar";
-import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const ListItem = ({ itemData }: { itemData: LinkData }) => {
   const url = `localhost/${itemData.key}`;
   const navigate = useNavigate();
+  const formatingFileSize = filesize.partial({ base: 2, standard: "jedec" });
 
   const goToDetailPage = () => {
     navigate(`/detailpage/${itemData.key}`);
@@ -43,7 +44,7 @@ const ListItem = ({ itemData }: { itemData: LinkData }) => {
       </TableCell>
       <TableCell>
         <span>파일사이즈</span>
-        <span>{fileSize(itemData.size)}</span>
+        <span>{formatingFileSize(itemData.size)}</span>
       </TableCell>
       <TableCell>
         <span>유효기간</span>
