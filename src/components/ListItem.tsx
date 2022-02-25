@@ -9,9 +9,10 @@ import { formattingExpireDate } from "shared/utils";
 import Avatar from "./Avatar";
 
 const ListItem = ({ itemData }: { itemData: LinkData }) => {
-  const url = `localhost/${itemData.key}`;
   const navigate = useNavigate();
   const formatingFileSize = filesize.partial({ base: 2, standard: "jedec" });
+  const url = `localhost/${itemData.key}`;
+  const isExistDownload = itemData.download_count > 0;
   const isExpired =
     formattingExpireDate(itemData.expires_at) === "만료되었습니다.";
 
@@ -19,7 +20,7 @@ const ListItem = ({ itemData }: { itemData: LinkData }) => {
     navigate(`/${itemData.key}`);
   };
 
-  const urlAlert = (e: any) => {
+  const urlAlert = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.stopPropagation();
     isExpired ? "" : alert(`${url} 주소가 복사되었습니다.`);
   };
@@ -55,7 +56,7 @@ const ListItem = ({ itemData }: { itemData: LinkData }) => {
       <TableCell>
         <span>받은사람</span>
         <LinkReceivers>
-          <Avatar text="recruit@estmob.com" />
+          {isExistDownload && <Avatar text="recruit@estmob.com" />}
         </LinkReceivers>
       </TableCell>
     </TableRow>
