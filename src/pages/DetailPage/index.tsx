@@ -79,7 +79,7 @@ const DetailPage: FC = () => {
             <ListSummary>
               <div>총 {data.count}개의 파일</div>
               {/* FIXME */}
-              {/* <div>{data.size}</div> */}
+              {/* <div>{fileSize(data.size)}</div> */}
               {data.size && <div>{fileSize(data.size)}</div>}
             </ListSummary>
             {data.files && (
