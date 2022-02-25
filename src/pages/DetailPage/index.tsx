@@ -14,7 +14,7 @@ const formatingFileSize = filesize.partial({ base: 2, standard: "jedec" });
 
 const DetailPage: FC = () => {
   const data = useFetch(
-    "https://storage-fe.fastraffic.io/homeworks/links",
+    process.env.REACT_APP_API_ADDRESS + "homeworks/links",
     true
   );
 
