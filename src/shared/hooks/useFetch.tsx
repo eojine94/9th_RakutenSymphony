@@ -8,7 +8,6 @@ const useFetch = (url: string, needFilter: boolean = false) => {
   const [data, setData] = useState<LinkData[] & LinkData>();
 
   const { id } = useParams();
-  console.log(url);
 
   useEffect(() => {
     const fetchData = async () => {
