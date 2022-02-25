@@ -8,6 +8,7 @@ import { files, Iimg } from "shared/types";
 import filesize from "filesize";
 import TODAY from "shared/constants";
 import useFetch from "shared/hooks/useFetch";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const formatingFileSize = filesize.partial({ base: 2, standard: "jedec" });
 
@@ -18,6 +19,10 @@ const DetailPage: FC = () => {
     alert("다운로드 되었습니다");
   };
 
+  const urlAlert = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    data && alert(`localhost:3000/${data.key} 주소가 복사되었습니다.`);
+  };
+
   return (
     <>
       {data && (
@@ -25,7 +30,9 @@ const DetailPage: FC = () => {
           <Header>
             <LinkInfo>
               <Title>로고파일</Title>
-              <Url>localhost/{data.key}</Url>
+              <CopyToClipboard text={`localhost:3000${data.key}`}>
+                <LinkUrl onClick={urlAlert}>localhost:3000/{data.key}</LinkUrl>
+              </CopyToClipboard>
             </LinkInfo>
             <DownloadButton onClick={handleDownloadBtn}>
               <img
@@ -51,10 +58,8 @@ const DetailPage: FC = () => {
               </LinkImage>
             </Descrition>
             <ListSummary>
-              <div>총 {data.count}개의 파일</div>
-              {/* FIXME */}
+              <div>총 {data.count.toLocaleString("ko-KR")}개의 파일</div>
               <div>{formatingFileSize(data.size)}</div>
-              {/* {data.size && <div>{formatingFileSize(data.size)}</div>} */}
             </ListSummary>
             {data.files && (
               <FileList>
@@ -264,6 +269,15 @@ const ExpiredText = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const LinkUrl = styled.a`
+  text-decoration: underline;
+  cursor: pointer;
+
+  :hover {
+    color: ${colors.teal700};
+  }
 `;
 
 export default DetailPage;
