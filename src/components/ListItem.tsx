@@ -1,6 +1,7 @@
 import React from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useNavigate } from "react-router";
+import useDateFormat from "shared/hooks/useDateFormat";
 import styled from "styled-components";
 import colors from "styles/colors";
 import filesize from "filesize";
@@ -8,9 +9,10 @@ import { LinkData } from "shared/types";
 import { formattingExpireDate } from "shared/utils";
 import Avatar from "./Avatar";
 
+const formatingFileSize = filesize.partial({ base: 2, standard: "jedec" });
+
 const ListItem = ({ itemData }: { itemData: LinkData }) => {
   const navigate = useNavigate();
-  const formatingFileSize = filesize.partial({ base: 2, standard: "jedec" });
   const url = `localhost/${itemData.key}`;
   const isExistDownload = itemData.download_count > 0;
   const isExpired =
@@ -51,7 +53,7 @@ const ListItem = ({ itemData }: { itemData: LinkData }) => {
       </TableCell>
       <TableCell>
         <span>유효기간</span>
-        <span>{formattingExpireDate(itemData.expires_at)}</span>
+        <span>{useDateFormat(itemData.expires_at, "EXPIRE")}</span>
       </TableCell>
       <TableCell>
         <span>받은사람</span>
