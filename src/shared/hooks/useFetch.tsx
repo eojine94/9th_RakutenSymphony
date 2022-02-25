@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { LinkData } from "shared/types";
 import { useParams } from "react-router";
-import { fil } from "date-fns/locale";
 
 const useFetch = (url: string, needFilter: boolean = false) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<LinkData[] & LinkData>();
 
   const { id } = useParams();
+  console.log(url);
 
   useEffect(() => {
     const fetchData = async () => {

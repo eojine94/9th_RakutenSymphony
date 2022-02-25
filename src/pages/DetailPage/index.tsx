@@ -13,7 +13,10 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 const formatingFileSize = filesize.partial({ base: 2, standard: "jedec" });
 
 const DetailPage: FC = () => {
-  const data = useFetch("/homeworks/links", true);
+  const data = useFetch(
+    process.env.REACT_APP_API_ADDRESS + "/homeworks/links",
+    true
+  );
 
   const handleDownloadBtn = (): void => {
     alert("다운로드 되었습니다");
