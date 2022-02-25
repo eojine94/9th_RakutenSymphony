@@ -13,17 +13,15 @@ import useFetch from "shared/hooks/useFetch";
 const formatingFileSize = filesize.partial({ base: 2, standard: "jedec" });
 
 const DetailPage: FC = () => {
-  const data = useFetch(
-    process.env.REACT_APP_API_ADDRESS + "homeworks/links",
-    true
-  );
+  const data = useFetch("/API_DATA.json", true);
+  const curUrl = `${window.location.host}${window.location.pathname}`;
 
   const handleDownloadBtn = (): void => {
     alert("다운로드 되었습니다");
   };
 
   const urlAlert = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    data && alert(`localhost:3000/${data.key} 주소가 복사되었습니다.`);
+    data && alert(`${curUrl} 주소가 복사되었습니다.`);
   };
 
   return (
@@ -33,8 +31,8 @@ const DetailPage: FC = () => {
           <Header>
             <LinkInfo>
               <Title>로고파일</Title>
-              <CopyToClipboard text={`localhost:3000${data.key}`}>
-                <LinkUrl onClick={urlAlert}>localhost:3000/{data.key}</LinkUrl>
+              <CopyToClipboard text={curUrl}>
+                <LinkUrl onClick={urlAlert}>{curUrl}</LinkUrl>
               </CopyToClipboard>
             </LinkInfo>
             <DownloadButton onClick={handleDownloadBtn}>
