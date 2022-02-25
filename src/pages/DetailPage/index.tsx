@@ -1,20 +1,20 @@
 import React from "react";
 import type { FC } from "react";
 import styled from "styled-components";
+import filesize from "filesize";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import colors from "styles/colors";
 import Button from "components/Button";
-import useDateFormat from "shared/hooks/useDateFormat";
-import { files, Iimg } from "shared/types";
-import filesize from "filesize";
 import TODAY from "shared/constants";
+import { files, Iimg } from "shared/types";
+import useDateFormat from "shared/hooks/useDateFormat";
 import useFetch from "shared/hooks/useFetch";
-import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const formatingFileSize = filesize.partial({ base: 2, standard: "jedec" });
 
 const DetailPage: FC = () => {
   const data = useFetch(
-    process.env.REACT_APP_API_ADDRESS + "/homeworks/links",
+    "https://storage-fe.fastraffic.io/homeworks/links",
     true
   );
 

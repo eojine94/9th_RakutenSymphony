@@ -7,7 +7,7 @@ import { LinkData } from "shared/types";
 import useFetch from "shared/hooks/useFetch";
 
 const LinkPage: FC = () => {
-  const data = useFetch(process.env.REACT_APP_API_ADDRESS + "/homeworks/links");
+  const data = useFetch("https://storage-fe.fastraffic.io/homeworks/links");
 
   return (
     <>
