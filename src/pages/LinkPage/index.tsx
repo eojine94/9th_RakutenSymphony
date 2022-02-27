@@ -7,7 +7,7 @@ import { LinkData } from "shared/types";
 import useFetch from "shared/hooks/useFetch";
 
 const LinkPage: FC = () => {
-  const data = useFetch("/API_DATA.json");
+  const data = useFetch("/homeworks/links");
 
   return (
     <>

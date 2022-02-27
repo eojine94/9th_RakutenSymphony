@@ -13,7 +13,7 @@ import useFetch from "shared/hooks/useFetch";
 const formatingFileSize = filesize.partial({ base: 2, standard: "jedec" });
 
 const DetailPage: FC = () => {
-  const data = useFetch("/API_DATA.json", true);
+  const data = useFetch("/homeworks/links", true);
   const curUrl = `${window.location.host}${window.location.pathname}`;
 
   const handleDownloadBtn = (): void => {
@@ -68,7 +68,7 @@ const DetailPage: FC = () => {
                   data.files.map((el: files) => {
                     return (
                       <FileListItem key={el.key}>
-                        <FileItemInfo img={el.thumbnailUrl}>
+                        <FileItemInfo img="/svgs/default.svg">
                           <span />
                           <span>{el.name}</span>
                         </FileItemInfo>
