@@ -11,8 +11,11 @@ import Avatar from "./Avatar";
 const formatingFileSize = filesize.partial({ base: 2, standard: "jedec" });
 
 const ListItem = ({ itemData }: { itemData: LinkData }) => {
+  const currentUrl = `${window.location.host}${window.location.pathname}`;
+  const url = currentUrl + itemData.key;
+
   const navigate = useNavigate();
-  const url = `localhost:3000/${itemData.key}`;
+
   const isExistDownload = itemData.download_count > 0;
   const isExpired =
     useDateFormat(itemData.expires_at, "EXPIRE") === "만료되었습니다.";
