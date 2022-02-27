@@ -6,6 +6,7 @@ import { useParams } from "react-router";
 const useFetch = (url: string, needFilter: boolean = false) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<LinkData[] & LinkData>();
+  const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
 
   const { id } = useParams();
 
@@ -13,7 +14,7 @@ const useFetch = (url: string, needFilter: boolean = false) => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(url);
+        const response = await axios.get(`${PROXY}${url}`);
         if (!needFilter) {
           setData(response.data);
         } else {

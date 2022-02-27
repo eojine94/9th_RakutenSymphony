@@ -58,5 +58,6 @@
     "customize-cra": "^1.0.0",
     "react-app-rewired": "^2.1.11",
     "react-copy-to-clipboard": "^5.0.4"
-  }
+  },
+  "proxy": "https://storage-fe.fastraffic.io"
 }
