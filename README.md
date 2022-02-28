@@ -65,7 +65,7 @@
 
 #### 1️⃣ 링크목록 API 통신시 CORS 오류, 백엔드 서버의 'Access-Control-Allow-Origin' 설정이 안되어있어서 응답에 접근 불가.
 
-#### 🚐 proxy를 사용하여 통신
+#### 🚐 proxy server 사용하여 통신 설정 수정.
 
 <br/>
 
